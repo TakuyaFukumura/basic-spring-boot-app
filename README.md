@@ -8,7 +8,6 @@ SpringBootアプリ開発の元となるリポジトリ
 ```bash
 $ ./mvnw spring-boot:run
 ```
-※IDEのターミナルでは起動できないもよう。Windows Terminalでは実行できている。原因は未特定
 
 ## コンパイルと実行
 ```bash
