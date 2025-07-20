@@ -17,8 +17,7 @@ public class IndexService {
 
     public String getMessage() {
         log.info("getMessage was called"); // ログ出力例
-        // データベースからIDが1のメッセージを取得
         Message message = messageRepository.findById(1L).orElse(null);
-        return message != null ? message.getText() : "Hello World!";
+        return message != null ? message.getText() : "Error!";
     }
 }
