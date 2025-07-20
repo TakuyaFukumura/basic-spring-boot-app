@@ -1,5 +1,7 @@
 package com.example.myapplication.service;
 
+import com.example.myapplication.entity.Message;
+import com.example.myapplication.repository.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -7,8 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class IndexService {
 
+    private final MessageRepository messageRepository;
+
+    public IndexService(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
+
     public String getMessage() {
         log.info("getMessage was called"); // ログ出力例
-        return "Hello World!";
+        Message message = messageRepository.findById(1L).orElse(null);
+        return message != null ? message.getText() : "Error!";
     }
 }
