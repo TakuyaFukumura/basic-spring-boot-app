@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Spring Boot 公式ドキュメント
+    url: https://spring.pleiades.io/spring-boot/docs/current/reference/html/getting-started.html
+    about: Spring Bootの基本的な使い方について学ぶ
+  - name: GitHub Discussions
+    url: https://github.com/TakuyaFukumura/basic-spring-boot-app/discussions
+    about: 開発に関する議論や情報共有
