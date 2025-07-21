@@ -37,13 +37,10 @@ class IndexServiceSpec extends Specification {
     }
 
     def "getMessage()でリポジトリが呼び出されること"() {
-        given: "リポジトリの設定"
-        messageRepository.findById(1L) >> Optional.empty()
-
         when: "getMessageを呼び出す"
         indexService.getMessage()
 
         then: "リポジトリのfindByIdが1回呼び出される"
-        1 * messageRepository.findById(1L)
+        1 * messageRepository.findById(1L) >> Optional.empty()
     }
 }
