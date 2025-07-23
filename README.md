@@ -18,23 +18,19 @@ SpringBootアプリ開発の元となるリポジトリ
     ```bash
     cd basic-spring-boot-app
     ```
-2. ビルド
-    ```bash
-    ./mvnw clean package
-    ```
-3. Docker Composeでアプリケーションを起動
+2. Docker Composeでアプリケーションを起動
     ```bash
     docker-compose up --build
     ```
-4. ブラウザでアクセス
+3. ブラウザでアクセス
 
     http://localhost:8080
 
-5. H2データベースコンソールへのアクセス（開発用）
+4. H2データベースコンソールへのアクセス（開発用）
 
     http://localhost:8080/h2-console
 
-6. ヘルスチェックエンドポイント
+5. ヘルスチェックエンドポイント
 
     http://localhost:8080/actuator/health
 
@@ -67,5 +63,5 @@ docker-compose build --no-cache
 ./mvnw clean package
 ```
 ```bash
-java -jar target/myproject-0.6.0.jar
+java -jar target/myproject.jar
 ```
