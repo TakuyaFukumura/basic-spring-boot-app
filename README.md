@@ -20,7 +20,7 @@ SpringBootアプリ開発の元となるリポジトリ
     ```
 2. Docker Composeでアプリケーションを起動
     ```bash
-    docker-compose up --build
+    docker compose up --build
     ```
 3. ブラウザでアクセス
 
@@ -38,17 +38,17 @@ SpringBootアプリ開発の元となるリポジトリ
 
 #### アプリケーションの停止
 ```bash
-docker-compose down
+docker compose down
 ```
 
 #### ログの確認
 ```bash
-docker-compose logs -f app
+docker compose logs -f app
 ```
 
 #### イメージの再ビルド
 ```bash
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 ## 従来の起動方法（Docker不使用）
