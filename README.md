@@ -12,30 +12,31 @@ SpringBootアプリ開発の元となるリポジトリ
 
 ### 起動手順
 1. リポジトリをクローン
-```bash
-git clone https://github.com/TakuyaFukumura/basic-spring-boot-app.git
-```
-```bash
-cd basic-spring-boot-app
-```
+    ```bash
+    git clone https://github.com/TakuyaFukumura/basic-spring-boot-app.git
+    ```
+    ```bash
+    cd basic-spring-boot-app
+    ```
+2. ビルド
+    ```bash
+    ./mvnw clean package
+    ```
+3. Docker Composeでアプリケーションを起動
+    ```bash
+    docker-compose up --build
+    ```
+4. ブラウザでアクセス
 
-2. Docker Composeでアプリケーションを起動
-```bash
-docker-compose up --build
-```
+    http://localhost:8080
 
-3. ブラウザでアクセス
+5. H2データベースコンソールへのアクセス（開発用）
 
-http://localhost:8080
+    http://localhost:8080/h2-console
 
+6. ヘルスチェックエンドポイント
 
-4. H2データベースコンソールへのアクセス（開発用）
-
-http://localhost:8080/h2-console
-
-5. ヘルスチェックエンドポイント
-
-http://localhost:8080/actuator/health
+    http://localhost:8080/actuator/health
 
 ### Docker コマンド
 
