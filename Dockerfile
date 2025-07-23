@@ -11,7 +11,7 @@ WORKDIR /app
 
 # ビルドされたJARファイルをコピー
 # 事前に "./mvnw clean package" を実行してJARファイルを作成してください
-COPY --chown=spring:spring target/myproject-0.6.0.jar app.jar
+COPY --chown=spring:spring target/myproject.jar app.jar
 
 # アプリケーションのポート
 EXPOSE 8080
