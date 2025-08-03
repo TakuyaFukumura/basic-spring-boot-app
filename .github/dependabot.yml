@@ -8,11 +8,6 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Asia/Tokyo"
-    # PRに自動的に追加するラベル
-    labels:
-      - "dependencies"
-      - "java"
-      - "maven"
     # PRの割り当て設定
     assignees:
       - "TakuyaFukumura"
