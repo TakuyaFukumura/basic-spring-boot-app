@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const darkModeIcon = document.getElementById('darkModeIcon');
     const htmlElement = document.documentElement;
 
-    // 要素が存在しない場合は何もしない
+    // ダークモード切替ボタンかアイコン要素が存在しない場合は何もしない
     if (!darkModeToggle || !darkModeIcon) {
         return;
     }
