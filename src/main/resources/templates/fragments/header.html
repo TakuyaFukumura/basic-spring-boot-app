@@ -1,0 +1,18 @@
+<th:block th:fragment="header">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <!-- アプリ名 -->
+                <a class="navbar-brand fw-bold" href="/">
+                    <i class="bi bi-gear-fill me-2"></i>Basic Spring Boot App
+                </a>
+                <!-- ダークモード切替トグルボタン -->
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-light" id="darkModeToggle" title="ダークモード切替">
+                        <i class="bi bi-moon-fill" id="darkModeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+</th:block>
