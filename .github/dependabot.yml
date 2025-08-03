@@ -42,9 +42,6 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Asia/Tokyo"
-    labels:
-      - "dependencies"
-      - "docker"
     assignees:
       - "TakuyaFukumura"
     open-pull-requests-limit: 5
