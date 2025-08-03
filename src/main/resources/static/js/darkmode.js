@@ -4,10 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const darkModeIcon = document.getElementById('darkModeIcon');
     const htmlElement = document.documentElement;
+
+    // 要素が存在しない場合は何もしない
+    if (!darkModeToggle || !darkModeIcon) {
+        return;
+    }
+
     // ローカルストレージからテーマを取得
     const savedTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-bs-theme', savedTheme);
     updateIcon(savedTheme);
+    
     // トグルボタンのクリックイベント
     darkModeToggle.addEventListener('click', function() {
         const currentTheme = htmlElement.getAttribute('data-bs-theme');
@@ -16,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
         updateIcon(newTheme);
     });
+
     // アイコンの更新
     function updateIcon(theme) {
         if (theme === 'dark') {
