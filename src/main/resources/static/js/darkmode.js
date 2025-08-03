@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-bs-theme', savedTheme);
     updateIcon(savedTheme);
-    
+
     // トグルボタンのクリックイベント
     darkModeToggle.addEventListener('click', function() {
         const currentTheme = htmlElement.getAttribute('data-bs-theme');
