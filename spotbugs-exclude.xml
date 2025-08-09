@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- テストファイルを除外 -->
+    <Match>
+        <Class name="~.*Test.*" />
+    </Match>
+    <Match>
+        <Class name="~.*Spec.*" />
+    </Match>
+    <!-- 自動生成されたコードを除外 -->
+    <Match>
+        <Class name="~.*Application" />
+        <Bug pattern="DM_EXIT" />
+    </Match>
+</FindBugsFilter>

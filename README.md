@@ -71,3 +71,42 @@ docker compose build --no-cache
 ```bash
 java -jar target/myproject.jar
 ```
+
+## 静的解析ツール（SpotBugs）
+
+### SpotBugsとは
+SpotBugsは、Javaコードの潜在的なバグや問題を検出する静的解析ツールです。コードのコンパイル後のバイトコードを解析し、一般的なバグパターンや問題のあるコーディングパターンを発見します。
+
+### SpotBugsの実行
+
+#### 基本的な解析の実行
+```bash
+./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+```
+
+#### 解析結果の確認とビルド時のチェック
+```bash
+./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:check
+```
+
+#### HTMLレポートの確認
+解析実行後、以下のファイルでHTMLレポートを確認できます：
+```
+target/site/spotbugs.html
+```
+
+### SpotBugsの設定
+
+#### 解析対象の設定
+- `spotbugs-include.xml`: 解析対象のパッケージやクラスを指定
+- `spotbugs-exclude.xml`: 解析から除外するパッケージやクラスを指定
+
+#### 解析レベルの設定
+- **Effort**: Max（最大）- より詳細な解析を実行
+- **Threshold**: Low（低）- より多くの問題を検出
+
+### Docker環境での実行
+Docker環境でもSpotBugsを実行できます：
+```bash
+docker compose exec app ./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+```
