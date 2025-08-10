@@ -92,9 +92,20 @@ SpotBugsは、Javaコードの潜在的なバグや問題を検出する静的�
 
 #### HTMLレポートの確認
 解析実行後、次のファイルでHTMLレポートを確認できます： target/site/spotbugs.html
-```
-start target/site/spotbugs.html
-```
+
+各OSでのコマンド例:
+- **Windows**:
+    ```bash
+    start target/site/spotbugs.html
+    ```
+- **macOS**:
+    ```bash
+    open target/site/spotbugs.html
+    ```
+- **Linux**:
+    ```bash
+    xdg-open target/site/spotbugs.html
+    ```
 
 ### SpotBugsの設定
 
