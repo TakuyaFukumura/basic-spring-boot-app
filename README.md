@@ -82,12 +82,12 @@ SpotBugsは、Javaコードの潜在的なバグや問題を検出する静的�
 
 #### 基本的な解析の実行
 ```bash
-./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+./mvnw spotbugs:spotbugs
 ```
 
 #### 解析結果の確認とビルド時のチェック
 ```bash
-./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:check
+./mvnw spotbugs:check
 ```
 
 #### HTMLレポートの確認
@@ -109,5 +109,5 @@ target/site/spotbugs.html
 ### Docker環境での実行
 Docker環境でもSpotBugsを実行できます：
 ```bash
-docker compose exec app ./mvnw compile com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+docker compose exec app ./mvnw spotbugs:spotbugs
 ```
