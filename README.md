@@ -91,9 +91,9 @@ SpotBugsは、Javaコードの潜在的なバグや問題を検出する静的�
 ```
 
 #### HTMLレポートの確認
-解析実行後、以下のファイルでHTMLレポートを確認できます：
+解析実行後、次のファイルでHTMLレポートを確認できます： target/site/spotbugs.html
 ```
-target/site/spotbugs.html
+start target/site/spotbugs.html
 ```
 
 ### SpotBugsの設定
