@@ -9,7 +9,7 @@
     </Match>
     <!-- 自動生成されたコードを除外 -->
     <Match>
-        <Class name="~.*Application" />
+        <Class name="com.example.myapplication.MyApplication" />
         <Bug pattern="DM_EXIT" />
     </Match>
 </FindBugsFilter>
