@@ -4,17 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Spring Security設定クラス
- * 認証・認可の設定を行います
+ * 認証・認可の設定を行います（データベースベース認証）
  */
 @Configuration
 @EnableWebSecurity
@@ -30,6 +26,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // H2コンソールは開発用のため認証不要
                         .requestMatchers("/h2-console/**").permitAll()
+                        // Actuatorヘルスエンドポイントは認証不要
+                        .requestMatchers("/actuator/health").permitAll()
                         // その他のすべてのリクエストは認証が必要
                         .anyRequest().authenticated()
                 )
@@ -52,20 +50,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-    }
-
-    /**
-     * インメモリユーザー詳細サービスの設定
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("pass"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 
     /**
