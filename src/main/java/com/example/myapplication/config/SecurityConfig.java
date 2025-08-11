@@ -26,30 +26,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // 認可設定
-            .authorizeHttpRequests(authz -> authz
-                // H2コンソールは開発用のため認証不要
-                .requestMatchers("/h2-console/**").permitAll()
-                // その他のすべてのリクエストは認証が必要
-                .anyRequest().authenticated()
-            )
-            // ログイン設定
-            .formLogin(form -> form
-                .defaultSuccessUrl("/", true) // ログイン成功時のリダイレクト先
-                .permitAll()
-            )
-            // ログアウト設定
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout") // ログアウト成功時のリダイレクト先
-                .permitAll()
-            )
-            // H2コンソール用の設定（フレームとCSRFを無効化）
-            .headers(headers -> headers
-                .frameOptions(frameOptions -> frameOptions.sameOrigin())
-            )
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/h2-console/**")
-            );
+                // 認可設定
+                .authorizeHttpRequests(authz -> authz
+                        // H2コンソールは開発用のため認証不要
+                        .requestMatchers("/h2-console/**").permitAll()
+                        // その他のすべてのリクエストは認証が必要
+                        .anyRequest().authenticated()
+                )
+                // ログイン設定
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/", true) // ログイン成功時のリダイレクト先
+                        .permitAll()
+                )
+                // ログアウト設定
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout") // ログアウト成功時のリダイレクト先
+                        .permitAll()
+                )
+                // H2コンソール用の設定（フレームとCSRFを無効化）
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")
+                );
 
         return http.build();
     }
