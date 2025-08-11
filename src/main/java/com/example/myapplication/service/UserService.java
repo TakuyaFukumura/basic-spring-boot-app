@@ -2,7 +2,6 @@ package com.example.myapplication.service;
 
 import com.example.myapplication.entity.User;
 import com.example.myapplication.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * データベースベースのユーザー認証サービス
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -30,7 +27,7 @@ public class UserService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = Arrays.stream(user.getRoles().split(","))
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.trim()))
-                .collect(Collectors.toList());
+                .toList();
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
