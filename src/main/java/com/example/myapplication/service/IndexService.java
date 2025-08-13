@@ -21,3 +21,4 @@ public class IndexService {
         return message != null ? message.getText() : "Error!";
     }
 }
+
