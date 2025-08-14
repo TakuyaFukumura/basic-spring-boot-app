@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/register")
 public class UserController {
 
+    private static final String REGISTER_VIEW = "register";
+
     private final UserService userService;
 
     @Autowired
@@ -37,7 +39,7 @@ public class UserController {
     @GetMapping
     public String showRegistrationForm(Model model) {
         model.addAttribute("userRegistration", new UserRegistrationDto());
-        return "register";
+        return REGISTER_VIEW;
     }
 
     /**
@@ -62,7 +64,7 @@ public class UserController {
 
         // バリデーションエラーがある場合はフォームに戻る
         if (result.hasErrors()) {
-            return "register";
+            return REGISTER_VIEW;
         }
 
         try {
@@ -77,12 +79,12 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             // ユーザー名重複エラー
             result.rejectValue("username", "error.username", e.getMessage());
-            return "register";
+            return REGISTER_VIEW;
 
         } catch (Exception e) {
             // その他のエラー
             model.addAttribute("errorMessage", "登録中にエラーが発生しました。再度お試しください。");
-            return "register";
+            return REGISTER_VIEW;
         }
     }
 }
