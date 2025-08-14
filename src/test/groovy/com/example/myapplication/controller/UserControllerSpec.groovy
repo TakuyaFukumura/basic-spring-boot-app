@@ -3,7 +3,6 @@ package com.example.myapplication.controller
 import com.example.myapplication.dto.UserRegistrationDto
 import com.example.myapplication.entity.User
 import com.example.myapplication.service.UserService
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
@@ -27,8 +26,8 @@ class UserControllerSpec extends Specification {
 
         then: "ステータスが200で登録フォームが返される"
         result.andExpect(status().isOk())
-              .andExpect(view().name("register"))
-              .andExpect(model().attributeExists("userRegistration"))
+                .andExpect(view().name("register"))
+                .andExpect(model().attributeExists("userRegistration"))
     }
 
     def "POST /registerで有効なデータの場合ユーザーが作成されること"() {
@@ -45,11 +44,11 @@ class UserControllerSpec extends Specification {
         then: "ユーザーが作成されログインページにリダイレクトされる"
         1 * userService.createUser({ UserRegistrationDto dto ->
             dto.username == "testuser" &&
-            dto.password == "password123" &&
-            dto.confirmPassword == "password123"
+                    dto.password == "password123" &&
+                    dto.confirmPassword == "password123"
         })
         result.andExpect(status().is3xxRedirection())
-              .andExpect(redirectedUrl("/login"))
+                .andExpect(redirectedUrl("/login"))
     }
 
     def "POST /registerでパスワードが一致しない場合エラーになること"() {
@@ -62,7 +61,7 @@ class UserControllerSpec extends Specification {
         then: "ユーザー作成は行われずフォームに戻る"
         0 * userService.createUser(_)
         result.andExpect(status().isOk())
-              .andExpect(view().name("register"))
+                .andExpect(view().name("register"))
     }
 
     def "POST /registerで既存ユーザー名の場合エラーになること"() {
@@ -78,7 +77,7 @@ class UserControllerSpec extends Specification {
         then: "エラーメッセージが表示されフォームに戻る"
         1 * userService.createUser(_)
         result.andExpect(status().isOk())
-              .andExpect(view().name("register"))
+                .andExpect(view().name("register"))
     }
 
     def "POST /registerで短いパスワードの場合バリデーションエラーになること"() {
@@ -91,6 +90,6 @@ class UserControllerSpec extends Specification {
         then: "バリデーションエラーでユーザー作成は行われずフォームに戻る"
         0 * userService.createUser(_)
         result.andExpect(status().isOk())
-              .andExpect(view().name("register"))
+                .andExpect(view().name("register"))
     }
 }

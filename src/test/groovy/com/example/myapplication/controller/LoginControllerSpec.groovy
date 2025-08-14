@@ -1,11 +1,12 @@
 package com.example.myapplication.controller
 
-import org.springframework.test.web.servlet.MockMvc
+
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
 /**
  * LoginControllerのSpockテスト
@@ -22,6 +23,6 @@ class LoginControllerSpec extends Specification {
 
         then: "ステータスが200でログインページが返される"
         result.andExpect(status().isOk())
-              .andExpect(view().name("login"))
+                .andExpect(view().name("login"))
     }
 }

@@ -21,7 +21,7 @@ class UserServiceCreateUserSpec extends Specification {
         registrationDto.username = "newuser"
         registrationDto.password = "password123"
         registrationDto.confirmPassword = "password123"
-        
+
         def encodedPassword = "encoded-password"
         def savedUser = new User("newuser", encodedPassword, "USER")
         savedUser.id = 1L
@@ -31,18 +31,18 @@ class UserServiceCreateUserSpec extends Specification {
 
         then: "ユーザー名の重複チェックが行われる"
         1 * userRepository.findByUsername("newuser") >> Optional.empty()
-        
+
         and: "パスワードがエンコードされる"
         1 * passwordEncoder.encode("password123") >> encodedPassword
-        
+
         and: "新規ユーザーが保存される"
         1 * userRepository.save({ User user ->
             user.username == "newuser" &&
-            user.password == encodedPassword &&
-            user.roles == "USER" &&
-            user.enabled == true
+                    user.password == encodedPassword &&
+                    user.roles == "USER" &&
+                    user.enabled == true
         }) >> savedUser
-        
+
         and: "保存されたユーザーが返される"
         result == savedUser
     }
@@ -53,7 +53,7 @@ class UserServiceCreateUserSpec extends Specification {
         registrationDto.username = "existinguser"
         registrationDto.password = "password123"
         registrationDto.confirmPassword = "password123"
-        
+
         def existingUser = new User("existinguser", "old-password", "USER")
 
         when: "既存ユーザー名でユーザー作成を試行"
@@ -61,11 +61,11 @@ class UserServiceCreateUserSpec extends Specification {
 
         then: "ユーザー名の重複チェックで既存ユーザーが見つかる"
         1 * userRepository.findByUsername("existinguser") >> Optional.of(existingUser)
-        
+
         and: "IllegalArgumentExceptionが発生する"
         def exception = thrown(IllegalArgumentException)
         exception.message == "ユーザー名 'existinguser' は既に使用されています"
-        
+
         and: "パスワードエンコードや保存は行われない"
         0 * passwordEncoder.encode(_)
         0 * userRepository.save(_)
@@ -77,14 +77,14 @@ class UserServiceCreateUserSpec extends Specification {
 
         when: "存在するユーザー名をチェック"
         def existsResult = userService.isUsernameExists("existinguser")
-        
+
         and: "存在しないユーザー名をチェック"
         def notExistsResult = userService.isUsernameExists("newuser")
 
         then: "適切な結果が返される"
         1 * userRepository.findByUsername("existinguser") >> Optional.of(existingUser)
         1 * userRepository.findByUsername("newuser") >> Optional.empty()
-        
+
         existsResult == true
         notExistsResult == false
     }
