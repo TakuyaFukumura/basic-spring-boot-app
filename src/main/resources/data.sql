@@ -1,5 +1,5 @@
 DELETE FROM message;
-INSERT INTO message (text) VALUES ('Hello World!');
+INSERT INTO message (id, text) VALUES (1, 'Hello World!');
 
 DELETE FROM users;
 -- user/password (BCrypt hash of "password")
