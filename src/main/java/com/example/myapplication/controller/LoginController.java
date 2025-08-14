@@ -12,6 +12,7 @@ public class LoginController {
 
     /**
      * カスタムログインページを表示
+     *
      * @return ログインページテンプレート名
      */
     @GetMapping("/login")

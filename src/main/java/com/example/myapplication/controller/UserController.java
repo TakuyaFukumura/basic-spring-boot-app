@@ -30,6 +30,7 @@ public class UserController {
 
     /**
      * ユーザー登録フォームを表示
+     *
      * @param model Thymeleafモデル
      * @return 登録フォームテンプレート名
      */
@@ -41,9 +42,10 @@ public class UserController {
 
     /**
      * ユーザー登録処理
-     * @param userRegistration 登録フォームデータ
-     * @param result バリデーション結果
-     * @param model Thymeleafモデル
+     *
+     * @param userRegistration   登録フォームデータ
+     * @param result             バリデーション結果
+     * @param model              Thymeleafモデル
      * @param redirectAttributes リダイレクト時の属性
      * @return リダイレクト先またはフォーム表示
      */
@@ -66,17 +68,17 @@ public class UserController {
         try {
             // ユーザー作成
             userService.createUser(userRegistration);
-            
+
             // 成功メッセージを設定してログイン画面にリダイレクト
-            redirectAttributes.addFlashAttribute("successMessage", 
-                "ユーザー登録が完了しました。ログインしてください。");
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "ユーザー登録が完了しました。ログインしてください。");
             return "redirect:/login";
-            
+
         } catch (IllegalArgumentException e) {
             // ユーザー名重複エラー
             result.rejectValue("username", "error.username", e.getMessage());
             return "register";
-            
+
         } catch (Exception e) {
             // その他のエラー
             model.addAttribute("errorMessage", "登録中にエラーが発生しました。再度お試しください。");
