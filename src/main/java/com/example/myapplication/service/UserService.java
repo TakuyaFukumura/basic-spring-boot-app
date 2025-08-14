@@ -50,6 +50,7 @@ public class UserService implements UserDetailsService {
 
     /**
      * 新規ユーザーを作成する
+     *
      * @param registrationDto 登録フォームからのデータ
      * @return 作成されたユーザーエンティティ
      * @throws IllegalArgumentException ユーザー名が既に存在する場合
@@ -75,6 +76,7 @@ public class UserService implements UserDetailsService {
 
     /**
      * ユーザー名の存在チェック
+     *
      * @param username チェックするユーザー名
      * @return ユーザー名が既に存在する場合true
      */
