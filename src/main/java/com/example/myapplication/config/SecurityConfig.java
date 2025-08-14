@@ -29,11 +29,16 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**").permitAll()
                         // Actuatorヘルスエンドポイントは認証不要
                         .requestMatchers("/actuator/health").permitAll()
+                        // ログインページは認証不要
+                        .requestMatchers("/login").permitAll()
+                        // ユーザー登録関連のエンドポイントは認証不要
+                        .requestMatchers("/register", "/register/**").permitAll()
                         // その他のすべてのリクエストは認証が必要
                         .anyRequest().authenticated()
                 )
                 // ログイン設定
                 .formLogin(form -> form
+                        .loginPage("/login")  // カスタムログインページ
                         .defaultSuccessUrl("/", true) // ログイン成功時のリダイレクト先
                         .permitAll()
                 )
