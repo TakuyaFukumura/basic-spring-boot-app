@@ -18,6 +18,6 @@ public class IndexService {
     public String getMessage() {
         log.info("getMessage was called"); // ログ出力例
         Message message = messageRepository.findById(1L).orElse(null);
-        return message != null ? message.getText() : "Error!";
+        return message == null ? "Error!" : message.getText();
     }
 }
