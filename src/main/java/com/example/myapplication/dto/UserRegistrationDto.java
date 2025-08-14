@@ -24,6 +24,7 @@ public class UserRegistrationDto {
 
     /**
      * パスワードと確認パスワードが一致するかチェック
+     *
      * @return パスワードが一致する場合true
      */
     public boolean isPasswordMatching() {
