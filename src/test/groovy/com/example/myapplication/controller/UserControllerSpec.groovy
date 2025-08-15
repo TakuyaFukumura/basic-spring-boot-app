@@ -93,3 +93,4 @@ class UserControllerSpec extends Specification {
                 .andExpect(view().name("register"))
     }
 }
+

@@ -89,3 +89,4 @@ class UserServiceCreateUserSpec extends Specification {
         notExistsResult == false
     }
 }
+

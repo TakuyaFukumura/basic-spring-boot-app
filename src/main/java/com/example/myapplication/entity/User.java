@@ -40,3 +40,4 @@ public class User {
         this.enabled = true;
     }
 }
+

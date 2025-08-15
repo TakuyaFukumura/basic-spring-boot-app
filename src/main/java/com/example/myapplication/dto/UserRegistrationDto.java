@@ -31,3 +31,4 @@ public class UserRegistrationDto {
         return password != null && password.equals(confirmPassword);
     }
 }
+

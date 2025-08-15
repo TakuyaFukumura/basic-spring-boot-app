@@ -54,3 +54,4 @@ class IndexControllerSpec extends Specification {
         result.andExpect(model().attribute("message", testMessage))
     }
 }
+

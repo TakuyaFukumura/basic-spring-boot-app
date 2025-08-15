@@ -44,3 +44,4 @@ class IndexServiceSpec extends Specification {
         1 * messageRepository.findById(1L) >> Optional.empty()
     }
 }
+

@@ -17,3 +17,4 @@ class MyApplicationSpec extends Specification {
         true // アプリケーションが起動すればテスト成功
     }
 }
+

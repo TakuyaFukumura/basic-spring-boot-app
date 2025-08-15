@@ -54,3 +54,4 @@ class SecurityConfigSpec extends Specification {
         encodedPassword != rawPassword
     }
 }
+
