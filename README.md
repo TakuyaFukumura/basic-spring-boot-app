@@ -122,4 +122,3 @@ Docker環境でもSpotBugsを実行できます：
 ```bash
 docker compose exec app ./mvnw spotbugs:spotbugs
 ```
-

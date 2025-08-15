@@ -26,4 +26,3 @@ class LoginControllerSpec extends Specification {
                 .andExpect(view().name("login"))
     }
 }
-
