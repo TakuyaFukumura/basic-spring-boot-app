@@ -25,6 +25,7 @@ public class AiController {
 
     /**
      * AI機能サンプル画面を表示
+     *
      * @param model ビューに渡すデータモデル
      * @return AI機能サンプルテンプレート名
      */
@@ -35,6 +36,7 @@ public class AiController {
 
     /**
      * 豆知識を取得してAI機能サンプル画面に表示
+     *
      * @param model ビューに渡すデータモデル
      * @return AI機能サンプルテンプレート名
      */

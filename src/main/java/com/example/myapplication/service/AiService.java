@@ -20,13 +20,13 @@ import java.util.Map;
 public class AiService {
 
     private static final Logger logger = LoggerFactory.getLogger(AiService.class);
-    
+
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
-    
+
     @Value("${app.ai.gemini.api-key:}")
     private String apiKey;
-    
+
     @Value("${app.ai.gemini.model:gemini-1.5-flash}")
     private String model;
 
@@ -39,6 +39,7 @@ public class AiService {
 
     /**
      * Gemini APIを使用して豆知識を取得する
+     *
      * @return 豆知識の文字列
      * @throws RuntimeException API呼び出しに失敗した場合
      */
@@ -51,18 +52,18 @@ public class AiService {
 
         try {
             String prompt = "日本語で面白い豆知識を1つ教えてください。100文字以内で簡潔にお願いします。";
-            
+
             // Gemini API リクエストボディの構築
             Map<String, Object> requestBody = Map.of(
-                "contents", new Object[]{
-                    Map.of("parts", new Object[]{
-                        Map.of("text", prompt)
-                    })
-                },
-                "generationConfig", Map.of(
-                    "temperature", 0.7,
-                    "maxOutputTokens", 200
-                )
+                    "contents", new Object[]{
+                            Map.of("parts", new Object[]{
+                                    Map.of("text", prompt)
+                            })
+                    },
+                    "generationConfig", Map.of(
+                            "temperature", 0.7,
+                            "maxOutputTokens", 200
+                    )
             );
 
             String response = webClient.post()
@@ -75,7 +76,7 @@ public class AiService {
                     .block();
 
             return parseGeminiResponse(response);
-            
+
         } catch (WebClientResponseException e) {
             logger.error("Gemini API呼び出しでHTTPエラーが発生: {}", e.getMessage());
             throw new RuntimeException("AI APIの呼び出しに失敗しました（HTTPエラー: " + e.getStatusCode() + "）");
@@ -87,6 +88,7 @@ public class AiService {
 
     /**
      * Gemini APIのレスポンスから豆知識テキストを抽出する
+     *
      * @param response Gemini APIからのJSONレスポンス
      * @return 抽出された豆知識テキスト
      */
@@ -94,11 +96,11 @@ public class AiService {
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode candidates = root.get("candidates");
-            
+
             if (candidates != null && candidates.isArray() && candidates.size() > 0) {
                 JsonNode firstCandidate = candidates.get(0);
                 JsonNode content = firstCandidate.get("content");
-                
+
                 if (content != null) {
                     JsonNode parts = content.get("parts");
                     if (parts != null && parts.isArray() && parts.size() > 0) {
@@ -109,10 +111,10 @@ public class AiService {
                     }
                 }
             }
-            
+
             logger.warn("Gemini APIレスポンスの解析に失敗しました。期待される形式ではありません: {}", response);
             return "AIからの応答を解析できませんでした。";
-            
+
         } catch (Exception e) {
             logger.error("Gemini APIレスポンスの解析中にエラーが発生: {}", e.getMessage());
             return "AIからの応答を解析できませんでした。";
@@ -121,17 +123,18 @@ public class AiService {
 
     /**
      * APIキーが設定されていない場合のサンプル豆知識を返す
+     *
      * @return サンプル豆知識
      */
     private String getSampleTrivia() {
         String[] sampleTrivias = {
-            "🐙 タコには3つの心臓があります。2つは鰓に血液を送り、1つは全身に血液を送っています。",
-            "🍯 ハチミツは腐りません。3000年前のエジプトの墓から発見されたハチミツでも食べられるそうです。",
-            "🧠 人間の脳は約1000億個の神経細胞を持っており、これは天の川銀河の星の数とほぼ同じです。",
-            "🦒 キリンの舌は約50cmの長さがあり、紫外線から守るために黒っぽい色をしています。",
-            "⚡ 雷は太陽の表面温度の約5倍の熱さで、約30,000度にも達します。"
+                "🐙 タコには3つの心臓があります。2つは鰓に血液を送り、1つは全身に血液を送っています。",
+                "🍯 ハチミツは腐りません。3000年前のエジプトの墓から発見されたハチミツでも食べられるそうです。",
+                "🧠 人間の脳は約1000億個の神経細胞を持っており、これは天の川銀河の星の数とほぼ同じです。",
+                "🦒 キリンの舌は約50cmの長さがあり、紫外線から守るために黒っぽい色をしています。",
+                "⚡ 雷は太陽の表面温度の約5倍の熱さで、約30,000度にも達します。"
         };
-        
+
         int randomIndex = (int) (Math.random() * sampleTrivias.length);
         return sampleTrivias[randomIndex];
     }
