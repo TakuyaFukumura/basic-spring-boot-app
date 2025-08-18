@@ -44,10 +44,10 @@ public class AiService {
      * @throws RuntimeException API呼び出しに失敗した場合
      */
     public String getTrivia() {
-        // APIキーが設定されていない場合はサンプル応答を返す
+        // APIキーが設定されていない場合は例外をスローする
         if (apiKey == null || apiKey.trim().isEmpty()) {
-            logger.info("Gemini APIキーが設定されていないため、サンプル応答を返します");
-            return getSampleTrivia();
+            logger.error("Gemini APIキーが設定されていません");
+            throw new RuntimeException("Gemini APIキーが設定されていません。application.propertiesで設定してください。");
         }
 
         try {
@@ -119,23 +119,5 @@ public class AiService {
             logger.error("Gemini APIレスポンスの解析中にエラーが発生: {}", e.getMessage());
             return "AIからの応答を解析できませんでした。";
         }
-    }
-
-    /**
-     * APIキーが設定されていない場合のサンプル豆知識を返す
-     *
-     * @return サンプル豆知識
-     */
-    private String getSampleTrivia() {
-        String[] sampleTrivias = {
-                "🐙 タコには3つの心臓があります。2つは鰓に血液を送り、1つは全身に血液を送っています。",
-                "🍯 ハチミツは腐りません。3000年前のエジプトの墓から発見されたハチミツでも食べられるそうです。",
-                "🧠 人間の脳は約1000億個の神経細胞を持っており、これは天の川銀河の星の数とほぼ同じです。",
-                "🦒 キリンの舌は約50cmの長さがあり、紫外線から守るために黒っぽい色をしています。",
-                "⚡ 雷は太陽の表面温度の約5倍の熱さで、約30,000度にも達します。"
-        };
-
-        int randomIndex = (int) (Math.random() * sampleTrivias.length);
-        return sampleTrivias[randomIndex];
     }
 }
