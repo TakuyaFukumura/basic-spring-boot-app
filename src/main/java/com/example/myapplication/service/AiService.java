@@ -97,13 +97,13 @@ public class AiService {
             JsonNode root = objectMapper.readTree(response);
             JsonNode candidates = root.get("candidates");
 
-            if (candidates != null && candidates.isArray() && candidates.size() > 0) {
+            if (candidates != null && candidates.isArray() && !candidates.isEmpty()) {
                 JsonNode firstCandidate = candidates.get(0);
                 JsonNode content = firstCandidate.get("content");
 
                 if (content != null) {
                     JsonNode parts = content.get("parts");
-                    if (parts != null && parts.isArray() && parts.size() > 0) {
+                    if (parts != null && parts.isArray() && !parts.isEmpty()) {
                         JsonNode text = parts.get(0).get("text");
                         if (text != null) {
                             return text.asText().trim();
