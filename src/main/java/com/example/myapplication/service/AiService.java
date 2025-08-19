@@ -76,7 +76,7 @@ public class AiService {
         String prompt = "100文字程度の日本語で豆知識を教えてください。";
 
         // Gemini API リクエストボディの構築
-        Map<String, Object> requestBody = Map.of(
+        return Map.of(
                 "contents", new Object[]{
                         Map.of("parts", new Object[]{
                                 Map.of("text", prompt)
@@ -87,7 +87,6 @@ public class AiService {
                         "maxOutputTokens", 200
                 )
         );
-        return requestBody;
     }
 
     /**
