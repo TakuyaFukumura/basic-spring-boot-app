@@ -49,20 +49,7 @@ public class AiService {
         }
 
         try {
-            String prompt = "100文字程度の日本語で豆知識を教えてください。";
-
-            // Gemini API リクエストボディの構築
-            Map<String, Object> requestBody = Map.of(
-                    "contents", new Object[]{
-                            Map.of("parts", new Object[]{
-                                    Map.of("text", prompt)
-                            })
-                    },
-                    "generationConfig", Map.of(
-                            "temperature", 0.7,
-                            "maxOutputTokens", 200
-                    )
-            );
+            Map<String, Object> requestBody = getStringObjectMap();
 
             String response = webClient.post()
                     .uri("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent")
@@ -83,6 +70,24 @@ public class AiService {
             logger.error("Gemini API呼び出しで予期しないエラーが発生", e);
             throw new RuntimeException("API呼び出しで予期しないエラーが発生しました。");
         }
+    }
+
+    private static Map<String, Object> getStringObjectMap() {
+        String prompt = "100文字程度の日本語で豆知識を教えてください。";
+
+        // Gemini API リクエストボディの構築
+        Map<String, Object> requestBody = Map.of(
+                "contents", new Object[]{
+                        Map.of("parts", new Object[]{
+                                Map.of("text", prompt)
+                        })
+                },
+                "generationConfig", Map.of(
+                        "temperature", 0.7,
+                        "maxOutputTokens", 200
+                )
+        );
+        return requestBody;
     }
 
     /**
