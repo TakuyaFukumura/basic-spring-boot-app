@@ -26,11 +26,10 @@ public class AiController {
     /**
      * AI機能サンプル画面を表示
      *
-     * @param model ビューに渡すデータモデル
      * @return AI機能サンプルテンプレート名
      */
     @GetMapping
-    public String aiSample(Model model) {
+    public String aiSample() {
         return "ai-sample";
     }
 
