@@ -77,11 +77,11 @@ public class AiService {
             return parseGeminiResponse(response);
 
         } catch (WebClientResponseException e) {
-            logger.error("Gemini API呼び出しでHTTPエラーが発生: {}", e.getMessage());
-            throw new RuntimeException("AI APIの呼び出しに失敗しました（HTTPエラー: " + e.getStatusCode() + "）");
+            logger.error("Gemini API呼び出しでHTTPエラーが発生", e);
+            throw e;
         } catch (Exception e) {
-            logger.error("Gemini API呼び出しで予期しないエラーが発生: {}", e.getMessage());
-            throw new RuntimeException("AI APIの呼び出しに失敗しました: " + e.getMessage());
+            logger.error("Gemini API呼び出しで予期しないエラーが発生", e);
+            throw e;
         }
     }
 
