@@ -49,7 +49,7 @@ public class AiService {
         }
 
         try {
-            String prompt = "日本語で面白い豆知識を1つ教えてください。100文字以内で簡潔にお願いします。";
+            String prompt = "100文字程度の日本語で豆知識を教えてください。";
 
             // Gemini API リクエストボディの構築
             Map<String, Object> requestBody = Map.of(
