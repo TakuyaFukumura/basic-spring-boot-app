@@ -49,7 +49,7 @@ public class AiService {
         }
 
         try {
-            Map<String, Object> requestBody = getStringObjectMap();
+            Map<String, Object> requestBody = createGeminiRequestBody();
 
             String response = webClient.post()
                     .uri("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent")
@@ -72,7 +72,7 @@ public class AiService {
         }
     }
 
-    private static Map<String, Object> getStringObjectMap() {
+    private static Map<String, Object> createGeminiRequestBody() {
         String prompt = "100文字程度の日本語で豆知識を教えてください。";
 
         // Gemini API リクエストボディの構築
