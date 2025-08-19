@@ -67,8 +67,9 @@ public class AiService {
             );
 
             String response = webClient.post()
-                    .uri("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey)
+                    .uri("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent")
                     .header("Content-Type", "application/json")
+                    .header("X-Goog-Api-Key", apiKey)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
