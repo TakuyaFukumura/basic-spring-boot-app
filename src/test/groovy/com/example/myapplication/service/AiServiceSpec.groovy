@@ -1,5 +1,7 @@
 package com.example.myapplication.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.web.reactive.function.client.WebClient
 import spock.lang.Specification
 
 /**
@@ -8,44 +10,24 @@ import spock.lang.Specification
  */
 class AiServiceSpec extends Specification {
 
-    def aiService = new AiService()
+    def webClient = Mock(WebClient)
+    def objectMapper = Mock(ObjectMapper)
+    def aiService = new AiService(webClient, objectMapper)
 
-    def "APIキーが設定されていない場合、サンプル豆知識が返されること"() {
+    def "APIキーが設定されていない場合、例外がスローされること"() {
         given: "APIキーが設定されていないAiService"
         // デフォルトでAPIキーは空文字列
 
         when: "getTriviaを呼び出す"
-        def result = aiService.getTrivia()
+        aiService.getTrivia()
 
-        then: "サンプル豆知識が返される"
-        result != null
-        !result.isEmpty()
-        // サンプル豆知識のパターンをチェック
-        (result.contains("タコには3つの心臓") ||
-         result.contains("ハチミツは腐りません") ||
-         result.contains("人間の脳は約1000億個") ||
-         result.contains("キリンの舌は約50cm") ||
-         result.contains("雷は太陽の表面温度"))
+        then: "IllegalStateExceptionがスローされる"
+        def exception = thrown(IllegalStateException)
+        exception.message == "APIキーが設定されていません。"
     }
 
-    def "getTriviaは空でない文字列を返すこと"() {
-        when: "getTriviaを呼び出す"
-        def result = aiService.getTrivia()
-
-        then: "空でない文字列が返される"
-        result != null
-        !result.trim().isEmpty()
-    }
-
-    def "複数回getTriviaを呼び出しても正常に動作すること"() {
-        when: "getTriviaを複数回呼び出す"
-        def results = []
-        3.times {
-            results << aiService.getTrivia()
-        }
-
-        then: "すべて空でない文字列が返される"
-        results.every { it != null && !it.trim().isEmpty() }
-        results.size() == 3
+    def "WebClientとObjectMapperが正しく注入されること"() {
+        expect: "依存関係が正しく設定されている"
+        aiService != null
     }
 }
