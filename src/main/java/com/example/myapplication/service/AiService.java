@@ -88,7 +88,7 @@ public class AiService {
                         })
                 },
                 "generationConfig", Map.of(
-                        "temperature", 0.7,
+                        "temperature", 2.0, // 値が大きいとAI応答がランダムになる：設定幅 0.0 ~ 2.0
                         "maxOutputTokens", 200
                 )
         );
