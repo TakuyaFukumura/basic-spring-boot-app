@@ -45,7 +45,7 @@ public class AiService {
         // APIキーが設定されていない場合は例外をスローする
         if (apiKey == null || apiKey.trim().isEmpty()) {
             logger.error("Gemini APIキーが設定されていません");
-            throw new RuntimeException("Gemini APIキーが設定されていません。application.propertiesで設定してください。");
+            throw new IllegalStateException("Gemini APIキーが設定されていません。");
         }
 
         try {
