@@ -72,6 +72,11 @@ public class AiService {
         }
     }
 
+    /**
+     * Gemini API用のリクエストボディを生成する
+     *
+     * @return Gemini APIに送信するリクエストボディ（Map形式）
+     */
     private static Map<String, Object> createGeminiRequestBody() {
         String prompt = "100文字程度の日本語で豆知識を教えてください。";
 
