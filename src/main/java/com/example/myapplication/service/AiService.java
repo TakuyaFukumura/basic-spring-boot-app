@@ -30,11 +30,9 @@ public class AiService {
     @Value("${app.ai.gemini.model:gemini-2.5-flash-lite}")
     private String model;
 
-    public AiService() {
-        this.webClient = WebClient.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
-                .build();
-        this.objectMapper = new ObjectMapper();
+    public AiService(WebClient webClient, ObjectMapper objectMapper) {
+        this.webClient = webClient;
+        this.objectMapper = objectMapper;
     }
 
     /**
