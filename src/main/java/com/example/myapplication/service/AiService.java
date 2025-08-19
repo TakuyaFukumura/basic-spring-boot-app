@@ -45,7 +45,7 @@ public class AiService {
         // APIキーが設定されていない場合は例外をスローする
         if (apiKey == null || apiKey.trim().isEmpty()) {
             logger.error("Gemini APIキーが設定されていません");
-            throw new IllegalStateException("Gemini APIキーが設定されていません。");
+            throw new IllegalStateException("APIキーが設定されていません。");
         }
 
         try {
@@ -78,10 +78,10 @@ public class AiService {
 
         } catch (WebClientResponseException e) {
             logger.error("Gemini API呼び出しでHTTPエラーが発生", e);
-            throw e;
+            throw new RuntimeException("API呼び出しに失敗しました。");
         } catch (Exception e) {
             logger.error("Gemini API呼び出しで予期しないエラーが発生", e);
-            throw e;
+            throw new RuntimeException("API呼び出しで予期しないエラーが発生しました。");
         }
     }
 
@@ -112,11 +112,11 @@ public class AiService {
             }
 
             logger.warn("Gemini APIレスポンスの解析に失敗しました。期待される形式ではありません: {}", response);
-            return "AIからの応答を解析できませんでした。";
+            throw new RuntimeException("AIからの応答を解析できませんでした。期待される形式ではありません。");
 
         } catch (Exception e) {
-            logger.error("Gemini APIレスポンスの解析中にエラーが発生: {}", e.getMessage());
-            return "AIからの応答を解析できませんでした。";
+            logger.error("Gemini APIレスポンスの解析中にエラーが発生", e);
+            throw new RuntimeException("AIからの応答を解析できませんでした。");
         }
     }
 }
