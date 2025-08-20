@@ -4,6 +4,8 @@ import com.example.myapplication.dto.UserRegistrationDto
 import com.example.myapplication.entity.User
 import com.example.myapplication.service.UserService
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.servlet.view.InternalResourceViewResolver
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -18,7 +20,10 @@ class UserControllerSpec extends Specification {
 
     def userService = Mock(UserService)
     def userController = new UserController(userService)
-    def mockMvc = MockMvcBuilders.standaloneSetup(userController).build()
+    def mockMvc = MockMvcBuilders.standaloneSetup(userController)
+            .setViewResolvers(new InternalResourceViewResolver("/templates/", ".html"))
+            .setValidator(new LocalValidatorFactoryBean())
+            .build()
 
     def "GET /registerでユーザー登録フォームが表示されること"() {
         when: "登録ページにGETリクエストを送信"
