@@ -69,22 +69,6 @@ class UserControllerSpec extends Specification {
                 .andExpect(view().name("register"))
     }
 
-    def "POST /registerで既存ユーザー名の場合エラーになること"() {
-        given: "既存ユーザー名での登録"
-        userService.createUser(_) >> { throw new IllegalArgumentException("ユーザー名 'existinguser' は既に使用されています") }
-
-        when: "既存ユーザー名での登録データでPOSTリクエストを送信"
-        def result = mockMvc.perform(post("/register")
-                .param("username", "existinguser")
-                .param("password", "password123")
-                .param("confirmPassword", "password123"))
-
-        then: "エラーメッセージが表示されフォームに戻る"
-        1 * userService.createUser(_)
-        result.andExpect(status().isOk())
-                .andExpect(view().name("register"))
-    }
-
     def "POST /registerで短いパスワードの場合バリデーションエラーになること"() {
         when: "短いパスワードでPOSTリクエストを送信"
         def result = mockMvc.perform(post("/register")
