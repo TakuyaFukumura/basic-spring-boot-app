@@ -70,6 +70,13 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
+            <!-- Spring Boot DevTools：開発時のホットリロード機能 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <!-- Groovy：動的プログラミング言語 -->
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
