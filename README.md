@@ -87,21 +87,28 @@ Spring Boot DevToolsは、開発効率を向上させる機能を提供します
 
 ### DevToolsの使用方法
 
-#### 1. devプロファイルで起動
+#### 1. devプロファイルで起動（DevTools有効）
 ```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+# Mavenプロファイルを使ってDevToolsを有効化
+./mvnw spring-boot:run -Pdev -Dspring-boot.run.profiles=dev
 ```
 
-#### 2. ファイル変更の検出
+#### 2. 通常起動（DevTools無効）
+```bash
+# DevToolsは無効、本番環境と同じ状態
+./mvnw spring-boot:run
+```
+
+#### 3. ファイル変更の検出
 - `src/main/java`または`src/main/resources`以下のファイルを変更
 - 変更保存後、約1-2秒でアプリケーションが自動再起動
 
-#### 3. LiveReload機能の利用
+#### 4. LiveReload機能の利用
 - ブラウザ拡張機能「LiveReload」をインストール（オプション）
 - HTMLやCSSの変更時にブラウザが自動リフレッシュ
 
 ### 注意事項
-- DevToolsは開発環境（devプロファイル）でのみ有効
+- DevToolsはMavenの`dev`プロファイルでのみ有効
 - 本番環境では自動的に無効化される
 - JARファイルとしてパッケージする際はDevToolsは除外される
 
