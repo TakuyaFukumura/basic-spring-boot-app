@@ -77,6 +77,32 @@ docker compose build --no-cache
 java -jar target/myproject.jar
 ```
 
+## 認証設定
+
+このアプリケーションには Spring Security による認証機能が実装されています。
+
+### 本番モード（認証有効）
+通常の起動では認証が有効になります：
+```bash
+./mvnw spring-boot:run
+```
+- ホームページ（`http://localhost:8080`）にアクセスするとログインページにリダイレクトされます
+- デフォルトユーザーでログインできます（詳細はデータベース初期化ファイルを参照）
+
+### 開発モード（認証無効）
+開発時の利便性のため、`dev`プロファイルでは認証を無効化できます：
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+- 認証なしで全てのページにアクセス可能
+- ログインフォームを経由せずに開発やテストが可能
+- H2コンソール（`http://localhost:8080/h2-console`）にもアクセス可能
+
+### 注意事項
+- 開発モードは **本番環境では絶対に使用しないでください**
+- 開発モードではCSRF保護も無効化されます
+- 本番デプロイ前には必ず認証有効モードでテストしてください
+
 ## 開発ツール（Spring Boot DevTools）
 
 ### DevToolsとは
