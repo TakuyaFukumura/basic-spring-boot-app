@@ -64,6 +64,11 @@ docker compose build --no-cache
 ./mvnw spring-boot:run
 ```
 
+### devプロファイルでの起動（開発者向け）
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
 ### コンパイルと実行
 ```bash
 ./mvnw clean package
@@ -71,6 +76,41 @@ docker compose build --no-cache
 ```bash
 java -jar target/myproject.jar
 ```
+
+## 開発ツール（Spring Boot DevTools）
+
+### DevToolsとは
+Spring Boot DevToolsは、開発効率を向上させる機能を提供します：
+- **自動再起動**: Javaファイルの変更を検出して自動的にアプリケーションを再起動
+- **LiveReload**: ブラウザの自動リフレッシュ機能
+- **プロパティのデフォルト設定**: 開発に適した設定の自動適用
+
+### DevToolsの使用方法
+
+#### 1. devプロファイルで起動（DevTools有効）
+```bash
+# Mavenプロファイルを使ってDevToolsを有効化
+./mvnw spring-boot:run -Pdev -Dspring-boot.run.profiles=dev
+```
+
+#### 2. 通常起動（DevTools無効）
+```bash
+# DevToolsは無効、本番環境と同じ状態
+./mvnw spring-boot:run
+```
+
+#### 3. ファイル変更の検出
+- `src/main/java`または`src/main/resources`以下のファイルを変更
+- 変更保存後、約1-2秒でアプリケーションが自動再起動
+
+#### 4. LiveReload機能の利用
+- ブラウザ拡張機能「LiveReload」をインストール（オプション）
+- HTMLやCSSの変更時にブラウザが自動リフレッシュ
+
+### 注意事項
+- DevToolsはMavenの`dev`プロファイルでのみ有効
+- 本番環境では自動的に無効化される
+- JARファイルとしてパッケージする際はDevToolsは除外される
 
 ## 静的解析ツール（SpotBugs）
 

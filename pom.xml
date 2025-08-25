@@ -5,7 +5,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>myproject</artifactId>
-    <version>0.15.1</version>
+    <version>0.16.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -145,5 +145,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <dependencies>
+                <dependency>
+                    <!-- Spring Boot DevTools：開発時のホットリロード機能 -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-devtools</artifactId>
+                    <scope>runtime</scope>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>
