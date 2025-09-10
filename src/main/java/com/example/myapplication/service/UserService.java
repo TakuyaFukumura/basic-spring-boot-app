@@ -20,7 +20,7 @@ import java.util.List;
  * ユーザー登録機能も提供
  */
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

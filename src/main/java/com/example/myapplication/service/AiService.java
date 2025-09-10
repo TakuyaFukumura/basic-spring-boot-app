@@ -17,7 +17,7 @@ import java.util.Map;
  * Gemini APIを使用して豆知識を取得する
  */
 @Service
-public class AiService {
+public class AiService implements AiServiceInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(AiService.class);
 

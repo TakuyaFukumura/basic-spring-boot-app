@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class IndexService {
+public class IndexService implements IndexServiceInterface {
 
     private final MessageRepository messageRepository;
 

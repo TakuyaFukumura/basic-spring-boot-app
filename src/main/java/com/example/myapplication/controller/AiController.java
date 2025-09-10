@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-import com.example.myapplication.service.AiService;
+import com.example.myapplication.service.AiServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/ai")
 public class AiController {
 
-    private final AiService aiService;
+    private final AiServiceInterface aiService;
 
     @Autowired
-    public AiController(AiService aiService) {
+    public AiController(AiServiceInterface aiService) {
         this.aiService = aiService;
     }
 
