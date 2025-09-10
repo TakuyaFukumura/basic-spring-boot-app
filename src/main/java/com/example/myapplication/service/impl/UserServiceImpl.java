@@ -3,7 +3,7 @@ package com.example.myapplication.service.impl;
 import com.example.myapplication.dto.UserRegistrationDto;
 import com.example.myapplication.entity.User;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.UserServiceInterface;
+import com.example.myapplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +21,13 @@ import java.util.List;
  * ユーザー登録機能も提供
  */
 @Service
-public class UserService implements UserServiceInterface {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

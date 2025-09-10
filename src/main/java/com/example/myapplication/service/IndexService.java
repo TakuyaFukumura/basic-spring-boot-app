@@ -4,7 +4,7 @@ package com.example.myapplication.service;
  * インデックスサービスのインターフェース
  * メッセージ取得機能を提供する
  */
-public interface IndexServiceInterface {
+public interface IndexService {
 
     /**
      * データベースからメッセージを取得する

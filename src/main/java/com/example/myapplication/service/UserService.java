@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * Spring SecurityのUserDetailsServiceを継承し、
  * データベースベースのユーザー認証とユーザー登録機能を提供する
  */
-public interface UserServiceInterface extends UserDetailsService {
+public interface UserService extends UserDetailsService {
 
     /**
      * 新規ユーザーを作成する

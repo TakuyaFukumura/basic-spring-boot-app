@@ -4,7 +4,7 @@ package com.example.myapplication.service;
  * AI機能サービスのインターフェース
  * Gemini APIを使用した豆知識取得機能を提供する
  */
-public interface AiServiceInterface {
+public interface AiService {
 
     /**
      * Gemini APIを使用して豆知識を取得する

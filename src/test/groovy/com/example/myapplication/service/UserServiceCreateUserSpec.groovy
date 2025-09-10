@@ -3,7 +3,7 @@ package com.example.myapplication.service
 import com.example.myapplication.dto.UserRegistrationDto
 import com.example.myapplication.entity.User
 import com.example.myapplication.repository.UserRepository
-import com.example.myapplication.service.impl.UserService
+import com.example.myapplication.service.impl.UserServiceImpl
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
@@ -14,7 +14,7 @@ class UserServiceCreateUserSpec extends Specification {
 
     def userRepository = Mock(UserRepository)
     def passwordEncoder = Mock(PasswordEncoder)
-    def userService = new UserService(userRepository, passwordEncoder)
+    def userService = new UserServiceImpl(userRepository, passwordEncoder)
 
     def "新規ユーザーが正常に作成されること"() {
         given: "新規ユーザー登録データ"

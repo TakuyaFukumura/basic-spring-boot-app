@@ -1,7 +1,7 @@
 package com.example.myapplication.controller;
 
 import com.example.myapplication.dto.UserRegistrationDto;
-import com.example.myapplication.service.UserServiceInterface;
+import com.example.myapplication.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +23,10 @@ public class UserController {
 
     private static final String REGISTER_VIEW = "register";
 
-    private final UserServiceInterface userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceInterface userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 

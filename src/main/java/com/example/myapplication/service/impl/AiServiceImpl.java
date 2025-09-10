@@ -1,6 +1,6 @@
 package com.example.myapplication.service.impl;
 
-import com.example.myapplication.service.AiServiceInterface;
+import com.example.myapplication.service.AiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -18,9 +18,9 @@ import java.util.Map;
  * Gemini APIを使用して豆知識を取得する
  */
 @Service
-public class AiService implements AiServiceInterface {
+public class AiServiceImpl implements AiService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AiService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AiServiceImpl.class);
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
@@ -31,7 +31,7 @@ public class AiService implements AiServiceInterface {
     @Value("${app.ai.gemini.model:gemini-2.5-flash-lite}")
     private String model;
 
-    public AiService(WebClient webClient, ObjectMapper objectMapper) {
+    public AiServiceImpl(WebClient webClient, ObjectMapper objectMapper) {
         this.webClient = webClient;
         this.objectMapper = objectMapper;
     }

@@ -2,7 +2,7 @@ package com.example.myapplication.service
 
 import com.example.myapplication.entity.Message
 import com.example.myapplication.repository.MessageRepository
-import com.example.myapplication.service.impl.IndexService
+import com.example.myapplication.service.impl.IndexServiceImpl
 import spock.lang.Specification
 
 /**
@@ -12,7 +12,7 @@ import spock.lang.Specification
 class IndexServiceSpec extends Specification {
 
     def messageRepository = Mock(MessageRepository)
-    def indexService = new IndexService(messageRepository)
+    def indexService = new IndexServiceImpl(messageRepository)
 
     def "getMessage()が正常なメッセージを返すこと"() {
         given: "リポジトリに存在するメッセージ"
