@@ -3,6 +3,7 @@ package com.example.myapplication.service
 import com.example.myapplication.dto.UserRegistrationDto
 import com.example.myapplication.entity.User
 import com.example.myapplication.repository.UserRepository
+import com.example.myapplication.service.impl.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 

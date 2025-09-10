@@ -1,6 +1,6 @@
 package com.example.myapplication.controller
 
-import com.example.myapplication.service.AiService
+import com.example.myapplication.service.AiServiceInterface
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class AiControllerSpec extends Specification {
 
-    def aiService = Mock(AiService)
+    def aiService = Mock(AiServiceInterface)
     def aiController = new AiController(aiService)
     def mockMvc = MockMvcBuilders.standaloneSetup(aiController).build()
 

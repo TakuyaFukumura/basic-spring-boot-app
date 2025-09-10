@@ -1,8 +1,9 @@
-package com.example.myapplication.service;
+package com.example.myapplication.service.impl;
 
 import com.example.myapplication.dto.UserRegistrationDto;
 import com.example.myapplication.entity.User;
 import com.example.myapplication.repository.UserRepository;
+import com.example.myapplication.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

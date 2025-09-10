@@ -1,6 +1,6 @@
 package com.example.myapplication.controller
 
-import com.example.myapplication.service.IndexService
+import com.example.myapplication.service.IndexServiceInterface
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class IndexControllerSpec extends Specification {
 
-    def indexService = Mock(IndexService)
+    def indexService = Mock(IndexServiceInterface)
     def indexController = new IndexController(indexService)
     def mockMvc = MockMvcBuilders.standaloneSetup(indexController).build()
 

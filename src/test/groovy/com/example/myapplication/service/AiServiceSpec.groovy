@@ -1,5 +1,6 @@
 package com.example.myapplication.service
 
+import com.example.myapplication.service.impl.AiService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.reactive.function.client.WebClient
 import spock.lang.Specification

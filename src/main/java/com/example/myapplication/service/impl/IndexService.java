@@ -1,7 +1,8 @@
-package com.example.myapplication.service;
+package com.example.myapplication.service.impl;
 
 import com.example.myapplication.entity.Message;
 import com.example.myapplication.repository.MessageRepository;
+import com.example.myapplication.service.IndexServiceInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
