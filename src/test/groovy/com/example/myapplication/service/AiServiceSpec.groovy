@@ -1,5 +1,6 @@
 package com.example.myapplication.service
 
+import com.example.myapplication.service.impl.AiServiceImpl
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.reactive.function.client.WebClient
 import spock.lang.Specification
@@ -12,7 +13,7 @@ class AiServiceSpec extends Specification {
 
     def webClient = Mock(WebClient)
     def objectMapper = Mock(ObjectMapper)
-    def aiService = new AiService(webClient, objectMapper)
+    def aiService = new AiServiceImpl(webClient, objectMapper)
 
     def "APIキーが設定されていない場合、例外がスローされること"() {
         given: "APIキーが設定されていないAiService"
