@@ -1,23 +1,15 @@
 package com.example.myapplication.service;
 
-import com.example.myapplication.entity.Message;
-import com.example.myapplication.repository.MessageRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+/**
+ * インデックスサービスのインターフェース
+ * メッセージ取得機能を提供する
+ */
+public interface IndexService {
 
-@Slf4j
-@Service
-public class IndexService {
-
-    private final MessageRepository messageRepository;
-
-    public IndexService(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
-
-    public String getMessage() {
-        log.info("getMessage was called"); // ログ出力例
-        Message message = messageRepository.findById(1L).orElse(null);
-        return message == null ? "Error!" : message.getText();
-    }
+    /**
+     * データベースからメッセージを取得する
+     *
+     * @return メッセージ文字列、取得できない場合は "Error!"
+     */
+    String getMessage();
 }
