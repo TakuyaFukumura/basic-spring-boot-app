@@ -1,343 +1,174 @@
 # 改善点調査レポート
 
-**作成日**: 2025年8月15日  
-**バージョン**: 0.14.1
-**プロジェクト**: basic-spring-boot-app  
-
-## 概要
-
-basic-spring-boot-appプロジェクトの包括的な調査を実施し、コード品質、アーキテクチャ、セキュリティ、パフォーマンス、保守性の観点から改善点を特定しました。
-
-## 調査結果サマリー
-
-### ✅ 良好な点
-
-1. **コード品質**: SpotBugs静的解析で0件のバグ検出
-2. **テスト**: Groovy + Spockフレームワークによる充実したテストカバレッジ
-3. **アーキテクチャ**: 標準的なSpring Boot 3.5.4構成、適切な層分離
-4. **セキュリティ**: Spring Security適用、BCrypt暗号化使用
-5. **依存関係管理**: Dependabot設定済み、月次自動更新
-6. **CI/CD**: GitHub Actions設定済み
-7. **コードスタイル**: Lombokによるボイラープレートコード削減
-
-### ⚠️ 改善が必要な点
-
-## 1. セキュリティ改善
-
-### 🔴 高優先度
-
-#### 1.1 プロダクション環境でのH2コンソール無効化
-**問題**: プロダクション環境でH2コンソールが有効になる可能性
-```properties
-# application.properties
-spring.h2.console.enabled=true  # 本番環境では危険
-```
-
-**改善案**:
-- プロファイル別設定の導入
-- 本番環境では必ずH2コンソールを無効化
-
-#### 1.2 CSRF保護の強化
-**問題**: H2コンソール用にCSRF保護が部分的に無効化
-```java
-.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-```
-
-**改善案**:
-- 本番環境では完全なCSRF保護を有効化
-- 開発環境のみCSRF無効化
-
-#### 1.3 セキュリティヘッダーの強化
-**問題**: セキュリティヘッダーが不十分
-```java
-.headers(headers -> headers
-    .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-)
-```
-
-**改善案**:
-```java
-.headers(headers -> headers
-    .frameOptions().deny()  // 本番環境
-    .contentTypeOptions().and()
-    .xssProtection().and()
-    .referrerPolicy(ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-    .httpStrictTransportSecurity(hstsConfig -> 
-        hstsConfig.maxAgeInSeconds(31536000)
-                  .includeSubdomains(true))
-)
-```
-
-## 2. 設定管理の改善
-
-### 🟡 中優先度
-
-#### 2.1 プロファイル別設定の整理
-**問題**: 設定ファイルの整理が不十分
-
-**現在の設定**:
-- `application.properties` (共通設定)
-- `application-dev.properties` (開発用設定)
-
-**改善案**:
-```
-src/main/resources/
-├── application.yml              # 共通設定（YAML形式）
-├── application-dev.yml          # 開発環境設定
-├── application-prod.yml         # 本番環境設定
-└── application-test.yml         # テスト環境設定
-```
-
-#### 2.2 外部設定化の推進
-**問題**: 機密情報がコードに含まれる可能性
-
-**改善案**:
-```yaml
-# application-prod.yml
-spring:
-  datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/myapp}
-    username: ${DB_USERNAME:myapp}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-```
-
-## 3. データベース設計の改善
-
-### 🟡 中優先度
-
-#### 3.1 本番データベースの採用
-**問題**: 本番環境でもH2インメモリDBを使用
-
-**改善案**:
-- PostgreSQL / MySQLの採用
-- Flyway / Liquibaseによるマイグレーション管理
-- データベース接続プールの設定
-
-#### 3.2 エンティティ設計の改善
-**問題**: 監査フィールドの欠如
-```java
-@Entity
-public class User {
-    // 作成日時、更新日時、作成者等の監査フィールドが不足
-}
-```
-
-**改善案**:
-```java
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-public class User {
-    @CreatedDate
-    private LocalDateTime createdAt;
-    
-    @LastModifiedDate  
-    private LocalDateTime updatedAt;
-    
-    @CreatedBy
-    private String createdBy;
-    
-    @Version
-    private Long version;  // 楽観的ロック
-}
-```
-
-## 4. 例外処理・エラーハンドリング
-
-### 🟡 中優先度
-
-#### 4.1 グローバル例外ハンドラーの実装
-**問題**: 統一された例外処理が不足
-
-**改善案**:
-```java
-@ControllerAdvice
-public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(MethodArgumentValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView handleValidationException(
-            MethodArgumentValidationException ex) {
-        // バリデーションエラーの統一処理
-    }
-    
-    @ExceptionHandler(DataAccessException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView handleDatabaseException(
-            DataAccessException ex) {
-        // データベースエラーの処理
-    }
-}
-```
-
-#### 4.2 カスタム例外クラスの実装
-**問題**: ドメイン固有の例外が不足
-
-**改善案**:
-```java
-public class BusinessException extends RuntimeException {
-    private final String errorCode;
-    // カスタム例外実装
-}
-```
-
-## 5. ロギング・監視の強化
-
-### 🟡 中優先度
-
-#### 5.1 構造化ログの導入
-**問題**: ログフォーマットが統一されていない
-
-**改善案**:
-```yaml
-logging:
-  level:
-    com.example.myapplication: INFO
-    org.springframework.security: DEBUG
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
-```
-
-#### 5.2 アプリケーション監視の強化
-**改善案**:
-```yaml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-  endpoint:
-    health:
-      show-details: when-authorized
-      show-components: always
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-```
-
-## 6. パフォーマンス改善
-
-### 🟢 低優先度
-
-#### 6.1 キャッシュの導入
-**問題**: データベースアクセスの最適化不足
-
-**改善案**:
-```java
-@Service
-@EnableCaching
-public class IndexService {
-    
-    @Cacheable(value = "messages", key = "#id")
-    public String getMessage(Long id) {
-        // キャッシュ機能の実装
-    }
-}
-```
-
-#### 6.2 データベース接続プールの最適化
-**改善案**:
-```yaml
-spring:
-  datasource:
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
-      idle-timeout: 300000
-      connection-timeout: 20000
-```
-
-## 7. テストの拡充
-
-### 🟢 低優先度
-
-#### 7.1 統合テストの追加
-**改善案**:
-```groovy
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ApplicationIntegrationSpec extends Specification {
-    // エンドツーエンドテストの実装
-}
-```
-
-#### 7.2 テストカバレッジの可視化
-**改善案**:
-```xml
-<plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.11</version>
-</plugin>
-```
-
-## 8. フロントエンド改善
-
-### 🟢 低優先度
-
-#### 8.1 アクセシビリティの向上
-**問題**: ARIA属性やアクセシビリティ配慮が不十分
-
-**改善案**:
-```html
-<form role="form" aria-labelledby="login-title">
-    <input type="text" 
-           aria-describedby="username-help"
-           aria-required="true">
-</form>
-```
-
-#### 8.2 Progressive Web App (PWA) 対応
-**改善案**:
-- Service Worker の実装
-- Web App Manifest の追加
-- オフライン対応
-
-## 9. 依存関係管理
-
-### 🟡 中優先度
-
-#### 9.1 脆弱性スキャンの強化
-**改善案**:
-```xml
-<plugin>
-    <groupId>org.owasp</groupId>
-    <artifactId>dependency-check-maven</artifactId>
-    <version>11.1.0</version>
-</plugin>
-```
-
-#### 9.2 依存関係のバージョン統一
-**問題**: 一部の依存関係で明示的なバージョン指定
-
-**改善案**:
-- Spring Boot の依存関係管理を最大限活用
-- 明示的バージョン指定を最小限に抑制
-
-## 実装優先度
-
-### 🔴 高優先度 (次回リリースで対応)
-1. セキュリティヘッダーの強化
-2. プロダクション環境設定の分離
-3. グローバル例外ハンドラーの実装
-
-### 🟡 中優先度 (次々回リリースまでに対応)
-1. 本番データベースの導入
-2. 監査フィールドの追加
-3. 構造化ログの導入
-
-### 🟢 低優先度 (将来的に検討)
-1. PWA対応
-2. キャッシュの導入
-3. テストカバレッジの可視化
-
-## まとめ
-
-本プロジェクトは全体的に良好な状態ですが、本番運用を見据えたセキュリティ強化と設定管理の改善が急務です。特にH2コンソールの本番無効化とCSRF保護の完全適用は早急な対応が必要です。
-
-段階的な改善により、より堅牢で保守性の高いアプリケーションに発展させることができます。
-
----
-**レポート作成者**: GitHub Copilot  
-**レビュー推奨**: 開発チーム、インフラチーム、セキュリティチーム
+**調査日**: 2026年9月11日
+**対象バージョン**: 0.17.0
+**プロジェクト**: `basic-spring-boot-app`
+
+> ファイル名は既存リンクとの互換性のため維持しています。内容は現行コードを基準に再調査しました。
+
+## 1. 調査範囲と前提
+
+以下を確認対象としました。
+
+- `pom.xml`、`README.md`、Docker設定
+- `src/main` のコントローラー、サービス、リポジトリ、エンティティ、設定
+- `src/test` の Spock テスト
+- `.github/workflows/build.yml`、`.github/dependabot.yml`
+- アプリケーション設定、DBスキーマ、初期データ
+
+## 2. 現状サマリー
+
+### 良好な点
+
+- Java 17、Spring Boot 4.1.1、Maven Wrapper を利用しており、ビルド手順が標準化されている。
+- Controller、Service、Repository、Entity の層分離ができている。
+- パスワード保存には `BCryptPasswordEncoder` を利用している。
+- 本番相当の設定では `open-in-view=false` を明示している。
+- Web、サービス、AI、ログイン、ユーザー登録を対象に Groovy/Spock テストが用意されている。
+- GitHub Actions で push 時の `mvn clean package` を実行し、Dependabot で Maven、Actions、Docker の更新を管理している。
+- Actuator の公開対象を `health` に限定している。
+
+### 主な改善テーマ
+
+1. 本番プロファイルと開発プロファイルの安全境界を明確にする。
+2. 外部API、DB、入力値に対する障害時の扱いを統一する。
+3. CIでの品質・脆弱性検査と、統合テストの実行範囲を強化する。
+4. 設定、監査情報、ログ、運用手順を整理する。
+5. Lombokを含むビルド環境の再現性を確保する。
+
+## 3. 改善点
+
+### 高優先度
+
+#### 3.1 ビルド環境とLombokの互換性確認
+
+`./mvnw test` を実行したところ、`IndexServiceImpl` の `log` フィールド、Entity/DTO の getter など、Lombokが生成する要素を解決できずコンパイルに失敗した。Java、Lombok、Maven Compiler Plugin、IDE/CIのアノテーション処理設定の組み合わせに依存している状態である。
+
+**推奨対応**:
+
+- CIと開発環境で使用するJDK、Maven、Lombokの対応バージョンを固定・明示する。
+- Mavenのコンパイル時アノテーション処理が確実に有効になる設定を確認する。
+- CIで `./mvnw clean verify` を実行し、ローカルだけでなくクリーン環境で再現性を確認する。
+- Lombok依存を減らす場合は、重要なドメインモデルやロガーから段階的に明示コードへ移行する。
+
+#### 3.2 H2コンソールと開発用セキュリティ設定の分離
+
+**確認事項**:
+
+- `application.properties` で `spring.h2.console.enabled=true` が共通設定になっている。
+- `SecurityConfig` で `/h2-console/**` を認証不要にし、CSRF除外と同一オリジンのフレーム表示を許可している。
+- `application-dev.properties` では `web-allow-others=true`、`DevSecurityConfig` では全リクエスト許可かつCSRF無効化になっている。
+- 本番用の `application-prod.properties` とセキュリティ設定が存在しない。
+
+**リスク**: 本番で誤って開発設定を使用した場合、DBコンソールへの到達や認証・CSRF保護の弱体化につながる。
+
+**推奨対応**:
+
+- H2コンソール、`web-allow-others`、CSRF無効化、全リクエスト許可を `dev` プロファイル限定にする。
+- 本番プロファイルを追加し、H2コンソールを無効化する。
+- 本番DBは PostgreSQL 等へ移行し、DBマイグレーションを Flyway または Liquibase で管理する。
+- 起動時に許可プロファイルを検査し、意図しないプロファイルで起動しない仕組みを検討する。
+
+#### 3.3 外部API呼び出しのタイムアウトとエラー契約
+
+`AiServiceImpl` は WebClient のレスポンス例外と一般例外を捕捉しているが、`WebClientConfig` に接続・応答タイムアウトやリトライ方針が見当たらない。
+
+**推奨対応**:
+
+- 接続、応答、リクエスト全体のタイムアウトを設定する。
+- リトライは一時的なエラーに限定し、指数バックオフと上限を設ける。
+- 外部API障害時の利用者向けメッセージ、ログレベル、エラーコードを統一する。
+- APIキーが設定されていない場合の動作を明示し、実運用でのサンプル応答との混同を防ぐ。
+
+#### 3.4 CIでの品質ゲート追加
+
+現在のワークフローはビルドを実行するが、SpotBugsプラグインは `pom.xml` に定義されているだけで、CIの品質ゲートとして明示的に実行されていない。また、依存脆弱性スキャンのジョブも確認できない。
+
+**推奨対応**:
+
+- `./mvnw clean verify` をCIの標準コマンドにする。
+- SpotBugs をCIで実行し、検出時に失敗させる基準を定める。
+- OWASP Dependency-Check、Dependabot alerts、または同等の脆弱性検査を導入する。
+- テスト、静的解析、依存脆弱性検査をジョブまたはステップ単位で可視化する。
+
+### 中優先度
+
+#### 3.5 DB設定とスキーマ管理の整理
+
+共通設定はファイル型H2 (`jdbc:h2:file:./data/myapp`) を使用し、開発設定では別ファイル (`myapp-dev`) と `ddl-auto=update` を使用している。環境ごとにDB初期化方式が異なるため、環境差分による不具合を招きやすい。
+
+**推奨対応**:
+
+- test/dev/prod のDB URL、DDL、初期データ投入方針を明文化する。
+- 本番では `ddl-auto=validate` を維持し、スキーマ変更はマイグレーションで行う。
+- DB接続情報は環境変数やシークレット管理へ移し、接続プールの上限・タイムアウトも環境別に設定する。
+- 初期データ投入を本番で実行する必要があるかを分離する。
+
+#### 3.6 ドメインエラーと例外処理の統一
+
+`UserController` と `AiController` に個別の `try/catch` があり、エラー処理と利用者向けメッセージがコントローラーへ分散している。グローバルな `@ControllerAdvice` やドメイン例外は確認できない。
+
+**推奨対応**:
+
+- 重複ユーザー、入力不正、外部API障害、DB障害をドメイン例外として整理する。
+- `@ControllerAdvice` で画面/APIごとのエラー応答を統一する。
+- 例外の原因情報をログに残しつつ、画面には機密情報や内部実装を返さない。
+- バリデーションエラーの表示形式を登録画面と他の画面で統一する。
+
+#### 3.7 監査情報と可観測性の追加
+
+`User` 等のエンティティに作成日時・更新日時・バージョンなどの監査情報がなく、ログもサービス呼び出しの一部に限られている。Actuator は health のみ公開しているため、運用時の原因調査情報が不足する可能性がある。
+
+**推奨対応**:
+
+- 必要なエンティティに作成日時、更新日時、楽観ロック用バージョンを追加する。
+- リクエストID等を含む構造化ログを導入する。
+- メトリクス、外部APIの応答時間、失敗回数を収集する。
+- Actuator の公開範囲は認証・ネットワーク制御とセットで検討する。
+
+### 低優先度
+
+#### 3.8 テストの実運用シナリオ拡充
+
+単体・Web層テストはあるが、認証済みアクセス、CSRF、H2コンソールのプロファイル差分、外部APIのタイムアウト、Actuator公開設定を横断的に検証する統合テストは不足している。
+
+**推奨対応**:
+
+- `@SpringBootTest` とランダムポートを用いた統合テストを追加する。
+- dev と通常プロファイルのセキュリティ差分をテストする。
+- 外部APIは WireMock 等で成功・タイムアウト・4xx/5xx を再現する。
+- JaCoCo 等でカバレッジを計測し、重要パスの最低基準を定める。
+
+#### 3.9 フロントエンドのアクセシビリティと運用性
+
+Thymeleaf画面にはログイン・登録フォームがあるため、ラベル、エラー表示、キーボード操作、コントラスト、レスポンシブ表示を継続的に確認する余地がある。
+
+**推奨対応**:
+
+- フォームのエラーと入力項目を適切なARIA属性で関連付ける。
+- HTMLアクセシビリティ検査をCIまたはレビュー手順に追加する。
+- PWA化は利用要件を確認した上で優先順位を決める。
+
+## 4. 実装優先順位
+
+| 優先度 | 対応項目 | 目安 |
+|---|---|---|
+| P0 | JDK/Lombok/Mavenの互換性確認とクリーンビルド復旧 | 次回リリース前 |
+| P0 | 本番プロファイル追加、H2コンソールと開発用Securityの分離 | 次回リリース前 |
+| P0 | 外部APIのタイムアウト、エラー契約、秘密情報運用の整理 | 次回リリース前 |
+| P1 | CIへの `verify`、SpotBugs、脆弱性検査の組み込み | 次回スプリント |
+| P1 | DBマイグレーションと環境別初期化方針の確立 | 次回スプリント |
+| P1 | グローバル例外処理、構造化ログ、監査情報 | 次々回リリース |
+| P2 | 統合テスト、カバレッジ、アクセシビリティ検査の拡充 | 継続改善 |
+
+## 5. 検証状況
+
+- 静的調査: 完了
+- `./mvnw test`: コンパイル段階で失敗。Lombok生成要素（`log`、getter等）が解決されなかった。
+- 未確認事項: Lombokのアノテーション処理設定を修正した環境で `./mvnw test` または `./mvnw clean verify` を再実行すること
+
+## 6. まとめ
+
+基本的な層構造、認証、テスト、CI、依存更新の仕組みは整っている。一方で、開発用機能が共通設定・共通認可設定に近い位置にあること、外部API障害への制御、CIの品質ゲートが主な運用リスクである。
+
+まず本番プロファイルと開発プロファイルを分離し、H2コンソール・CSRF・認証の境界を明確にする。その後、CI品質ゲート、DBマイグレーション、例外処理と可観測性を段階的に整備するのが妥当である。
