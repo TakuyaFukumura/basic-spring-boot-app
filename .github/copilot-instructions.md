@@ -1,13 +1,13 @@
 # Basic Spring Boot Application
 
-このプロジェクトはSpring Boot開発の基礎となるサンプルWebアプリケーションです。Spring Boot 3.5.4、Java 17、Maven、Thymeleafテンプレートエンジン、Spring Data JPA（H2インメモリDB）、Spring Boot Actuatorによる監視機能を利用しています。
+このプロジェクトはSpring Boot開発の基礎となるサンプルWebアプリケーションです。Spring Boot 3.5.4、Java 25、Maven、Thymeleafテンプレートエンジン、Spring Data JPA（H2インメモリDB）、Spring Boot Actuatorによる監視機能を利用しています。
 
 必ず最初にこれらの手順を参照し、ここに記載されていない情報や予期しない事象に遭遇した場合のみ検索やbashコマンドを利用してください。
 
 ## 効率的な作業のために
 
 ### 初期設定とビルド
-- 開始前にJava 17以上（OpenJDK推奨）をインストールしてください。
+- 開始前にJava 25以上（OpenJDK推奨）をインストールしてください。
 - アプリケーションのビルド：
   - `./mvnw clean package` -- 初回ビルドは依存関係のダウンロードで4～5分かかります。絶対にキャンセルしないでください。タイムアウトは600秒以上に設定。
   - 2回目以降のビルドはキャッシュ利用で約5秒です。
@@ -61,7 +61,7 @@ src/
 ```
 
 ### 主要な設定ファイル
-- **pom.xml**: Spring Boot 3.5.4、Java 17、Spockテストフレームワークを利用したMavenプロジェクト設定
+- **pom.xml**: Spring Boot 3.5.4、Java 25、Spockテストフレームワークを利用したMavenプロジェクト設定
 - **application.properties**: H2データベース設定、JPA設定、Actuatorエンドポイント
 - **Dockerfile**: マルチステージDockerビルド（制限環境では動作しない場合あり）
 - **docker-compose.yml**: 開発用プロファイルを含むDocker Compose設定
